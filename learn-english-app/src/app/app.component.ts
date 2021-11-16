@@ -17,5 +17,6 @@ export class AppComponent {
 
   public reset():void {
     this.jogoEmAndamento = true;
+    this.tipoEncerramento = '';
   }
 }
