@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { map, retry, tap } from 'rxjs/operators';
 import { PATH } from './app.api';
 import { Oferta } from './shared/oferta.model';
 import { HttpClient } from '@angular/common/http';
@@ -37,6 +39,14 @@ export class OfertasService {
 
     return this.http.get(`${PATH.ONDE_FICA}?id=${id}`).toPromise()
       .then((resposta: any) => resposta[0].descricao)
+  }
+
+  public pesquisaOfertas(termo: string): Observable<Oferta[]> {
+    return this.http.get<Oferta[]>(`${PATH.OFERTAS}?descricao_oferta_like=${termo}`)
+      .pipe(
+        retry(10),
+        tap(response => response)
+      )
   }
 
 }
