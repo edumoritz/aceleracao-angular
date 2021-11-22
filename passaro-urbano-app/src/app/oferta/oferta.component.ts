@@ -1,7 +1,7 @@
 import { Oferta } from './../shared/oferta.model';
 import { OfertasService } from './../ofertas.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 // import { Observable, interval, Observer, Subscription } from 'rxjs';
 
 @Component({
@@ -37,11 +37,18 @@ export class OfertaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // this.route.snapshot.params['id']
 
-    this.ofertaService.getOfertasPorId(this.route.snapshot.params['id']).then((resposta: Oferta)=> {
-      this.oferta = resposta
+    this.route.params.subscribe((parametros: Params) => {
+      this.ofertaService.getOfertasPorId(+parametros.id).then((resposta: Oferta) => {
+        this.oferta = resposta
 
-      console.log(resposta);
-    });
+      })
+    })
+
+    // this.ofertaService.getOfertasPorId(this.route.snapshot.params['id']).then((resposta: Oferta)=> {
+    //   this.oferta = resposta
+
+    //   console.log(resposta);
+    // });
 
     // observable
     // let meuObservableTest = new Observable((observer: Observer<number>) => {
