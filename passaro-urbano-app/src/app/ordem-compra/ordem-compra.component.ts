@@ -1,76 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { OrdemCompraService } from './../ordem-compra.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Pedido } from '../shared/pedido.model'
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'pu-ordem-compra',
   templateUrl: './ordem-compra.component.html',
-  styleUrls: ['./ordem-compra.component.css']
+  styleUrls: ['./ordem-compra.component.css'],
+  providers: [ OrdemCompraService ]
 })
 export class OrdemCompraComponent implements OnInit {
 
-  public endereco: string = ''
-  public numero: number = 0
-  public complemento: string = ''
-  public formaPagamento: string = '';
+  @ViewChild('formulario') public f!: NgForm
 
-  // controle de validacao dos campos
-  public enderecoValido!: boolean
-  public numeroValido!: boolean
-  public complementoValido!: boolean
-  public formaPagamentoValido!: boolean
+  public idPedidoCompra!: number;
 
-  // estado primitivos dos campos (pristine)
-  public enderecoEstadoPrimitivo: boolean = true
-  public numeroEstadoPrimitivo: boolean = true
-  public complementoEstadoPrimitivo: boolean = true
-  public formaPagamentoEstadoPrimitivo: boolean = true
+  constructor(private ordemCompraService: OrdemCompraService) { }
 
-  constructor() { }
+  ngOnInit() {
 
-  ngOnInit(): void {
   }
 
-  atualizaEndereco(valor: string) {
-    this.endereco = valor
+  public confirmarCompra(): void {
+    let pedido: Pedido = new Pedido(
+      this.f.value.endereco,
+      this.f.value.numero,
+      this.f.value.complemento,
+      this.f.value.formaPagamento,
+    );
+    this.ordemCompraService.efetivarCompra(pedido).subscribe((idPedido: number) => this.idPedidoCompra = idPedido);
 
-    this.validaCampo(this.endereco.length > 3, 'endereco')
   }
 
-  atualizaNumero(valor: number) {
-    this.numero = valor
+  public onSubmit(): void {
 
-    this.validaCampo(this.numero > 0, 'numero')
   }
-
-  atualizaComplemento(valor: string) {
-    this.complemento = valor
-    this.complementoEstadoPrimitivo = false
-
-    if (this.complemento.length > 0) {
-      this.complementoValido = true
-    }
-  }
-
-  atualizaFormaPagamento(valor: string) {
-    this.formaPagamento = valor
-
-    this.validaCampo(this.formaPagamento !== '', 'formaPagamento')
-  }
-
-  public validaCampo(validacao: boolean, campo: string) {
-    switch (campo) {
-      case 'endereco':
-        this.enderecoEstadoPrimitivo = false;
-        this.enderecoValido = validacao
-        break;
-      case 'numero':
-        this.numeroEstadoPrimitivo = false
-        this.numeroValido = validacao
-      break;
-      case 'formaPagamento':
-        this.formaPagamentoEstadoPrimitivo = false
-        this.formaPagamentoValido = validacao
-        break;
-    }
-  }
-
 }
