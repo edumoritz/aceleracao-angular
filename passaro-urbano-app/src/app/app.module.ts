@@ -1,3 +1,4 @@
+import { CarrinhoService } from './carrinho.service';
 import { DescricaoReduzida } from './util/descricao-reduzida.pipe';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -18,7 +19,8 @@ import { ComoUsarComponent } from './oferta/como-usar/como-usar.component';
 import { OndeFicaComponent } from './oferta/onde-fica/onde-fica.component';
 import { OrdemCompraComponent } from './ordem-compra/ordem-compra.component';
 import { OrdemCompraSucessoComponent } from './ordem-compra-sucesso/ordem-compra-sucesso.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+// import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,13 +38,13 @@ import { FormsModule } from '@angular/forms';
     OrdemCompraSucessoComponent,
   ],
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [],
+  providers: [ CarrinhoService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

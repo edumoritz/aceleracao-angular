@@ -1,3 +1,4 @@
+import { CarrinhoService } from './../carrinho.service';
 import { Oferta } from './../shared/oferta.model';
 import { OfertasService } from './../ofertas.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -22,7 +23,8 @@ export class OfertaComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private ofertaService: OfertasService
+    private ofertaService: OfertasService,
+    private carrinhoService: CarrinhoService
   ) {
   }
 
@@ -35,6 +37,10 @@ export class OfertaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    console.log('Oferta - Array de itens do carrinho: ', this.carrinhoService.exibirItens());
+
+
     // this.route.snapshot.params['id']
 
     this.route.params.subscribe((parametros: Params) => {
@@ -87,6 +93,11 @@ export class OfertaComponent implements OnInit, OnDestroy {
     // })
   }
 
+  adicionarItemCarrinho(): void {
+    this.carrinhoService.incluirItem(this.oferta)
+
+    console.log(this.carrinhoService.exibirItens());
+  }
 
 
 }
